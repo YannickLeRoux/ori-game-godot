@@ -46,22 +46,22 @@ region = Rect2( 256, 256, 128, 128 )
 [sub_resource type="AtlasTexture" id=9]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 0, 384, 128, 128 )
+region = Rect2( 256, 384, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=10]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 256, 384, 128, 128 )
+region = Rect2( 128, 384, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=11]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 128, 128 )
+region = Rect2( 0, 384, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=12]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 128, 384, 128, 128 )
+region = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="SpriteFrames" id=13]
 animations = [ {
@@ -72,40 +72,50 @@ animations = [ {
 }, {
 "frames": [ SubResource( 9 ) ],
 "loop": true,
-"name": "jump",
+"name": "insta",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 10 ) ],
 "loop": true,
-"name": "insta",
+"name": "shot",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 11 ) ],
 "loop": true,
-"name": "stand",
+"name": "jump",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 12 ) ],
 "loop": true,
-"name": "shot",
+"name": "stand",
 "speed": 5.0
 } ]
 
 [sub_resource type="CapsuleShape2D" id=14]
-radius = 16.0
+radius = 17.0
 height = 88.0
 
 [node name="Player" type="KinematicBody2D"]
 collision_mask = 4
 script = ExtResource( 2 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( -61, -125 )
+[node name="PlayerAnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -66, -125 )
 frames = SubResource( 13 )
 animation = "walk"
 centered = false
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -60 )
+position = Vector2( 4, -57 )
 shape = SubResource( 14 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 1, -194 )
+current = true
+
+[node name="shotPosition" type="Position2D" parent="."]
+position = Vector2( 53, -72 )
+
+[node name="instaPosition" type="Position2D" parent="."]
+position = Vector2( 59, -58 )
