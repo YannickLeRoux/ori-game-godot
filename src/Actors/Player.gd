@@ -7,18 +7,25 @@ var can_fire = true
 var rate_of_shots = 0.4
 var rate_of_insta = 1
 
-func fire_shot():
+export var direction: Vector2 = get_direction()
+
+func fire_shot(direction_x: float):
+	print(direction_x)
 	var shot_instance = shot.instance()
 	shot_instance.position = get_node("shotPosition").get_global_position()
+	shot_instance.set_shot_direction(direction_x)
+	shot_instance.position.x = shot_instance.position.x if direction_x >= 0.0 else shot_instance.position.x -106
 	get_parent().add_child((shot_instance))
 
-func fire_insta():
+func fire_insta(direction_x):
 	var insta_instance = insta.instance()
 	insta_instance.position = get_node("instaPosition").get_global_position()
+	insta_instance.set_insta_direction(direction_x)
+	insta_instance.position.x = insta_instance.position.x if direction_x >= 0.0 else insta_instance.position.x -116
 	get_parent().add_child((insta_instance))
 
 func _physics_process(delta : float) -> void:
-	var direction = get_direction()
+	direction = get_direction()
 	get_animation(direction)
 	var is_jump_interrupted = Input.is_action_just_released("jump") and _velocity.y < 0.0
 	_velocity = calculate_move_velocity(_velocity, speed, direction, is_jump_interrupted)
@@ -47,33 +54,33 @@ func calculate_move_velocity(
 	return new_velocity
 
 func get_animation(direction: Vector2) -> void:
-	$PlayerAnimatedSprite.flip_h = true if direction.x >= 0 else false
+	$ori.flip_h = true if direction.x >= 0 else false
 
 	if Input.is_action_pressed("shot"):
-		$PlayerAnimatedSprite.play("shot")
+		$ori.play("shot")
 
 		if (can_fire == true):
 			can_fire = false;
-			fire_shot()
+			fire_shot(direction.x)
 			yield(get_tree().create_timer(rate_of_shots),"timeout")
 			can_fire = true
 
 
 	elif Input.is_action_pressed("insta"):
-		$PlayerAnimatedSprite.play("insta")
+		$ori.play("insta")
 		if (can_fire == true):
 			can_fire = false;
-			fire_insta()
+			fire_insta(direction.x)
 			yield(get_tree().create_timer(rate_of_insta),"timeout")
 			can_fire = true
 
 	elif Input.is_action_pressed("move_right") or  Input.is_action_pressed("move_left"):
-		$PlayerAnimatedSprite.play("walk")
+		$ori.play("walk")
 
 	elif Input.is_action_pressed("jump"):
-		$PlayerAnimatedSprite.play("jump")
+		$ori.play("jump")
 
 
 
 	else:
-		$PlayerAnimatedSprite.play("stand")
+		$ori.play("stand")
