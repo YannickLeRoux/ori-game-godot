@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://src/Actors/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://assets/Girl1.png" type="Texture" id=2]
@@ -55,8 +55,25 @@ animations = [ {
 radius = 16.0
 height = 88.0
 
-[sub_resource type="RectangleShape2D" id=12]
+[sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 27, 59 )
+
+[sub_resource type="Animation" id=12]
+resource_name = "flash"
+length = 0.3
+step = 0.15
+tracks/0/type = "value"
+tracks/0/path = NodePath("girl:modulate")
+tracks/0/interp = 0
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.01, 0.15 ),
+"transitions": PoolRealArray( 0.0110485, 0.0334931 ),
+"update": 2,
+"values": [ Color( 0, 0, 0, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="Enemy" type="KinematicBody2D"]
 light_mask = 2
@@ -101,5 +118,8 @@ collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShotDetector"]
 position = Vector2( 0, -58 )
-shape = SubResource( 12 )
+shape = SubResource( 11 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/flash = SubResource( 12 )
 [connection signal="body_entered" from="ShotDetector" to="." method="_on_ShotDetector_body_entered"]
